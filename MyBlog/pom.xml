@@ -7,7 +7,33 @@
   <version>1.0-SNAPSHOT</version>
   <name>MyBlog Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+  <properties>
+    <spring-core.version>6.2.1</spring-core.version>
+    <spring-web.version>6.2.1</spring-web.version>
+    <spring-jdbc.version>6.2.1</spring-jdbc.version>
+  </properties>
   <dependencies>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring-core.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring-web.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring-jdbc.version}</version>
+    </dependency>
+
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
