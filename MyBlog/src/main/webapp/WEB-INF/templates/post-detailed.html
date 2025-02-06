@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<a th:href="@{/}">Домой</a>
+<br>
+
+<h1 th:text="${post.title}"></h1>
+
+<div th:if="${#strings.length(post.image) > 0}">
+    <img th:src="@{'/images/' + ${post.image}}" alt="No image in static context" style="display: block; margin-left: auto; margin-right: auto; width: 10%;"/>
+</div>
+<br>
+
+<div th:utext="${post.content}"></div>
+
+
+<i class="fa fa-heart" style="font-size:24px;color:red" th:attr="id=like_counter" th:text="${post.likesCount}"></i>
+<br>
+<div>
+    <b>Тэги: </b><i th:text="${post.tags}"></i>
+</div>
+<br>
+<hr>
+
+</body>
+</html>

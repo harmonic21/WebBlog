@@ -23,6 +23,9 @@ public class PostRepository {
     private static final String INSERT_STATEMENT = """
             INSERT INTO POST (title, content, tags, image, likes_count) VALUES (:title, :content, :tags, :image, :likes_count)""";
 
+    private static final String SELECT_BY_ID_STATEMENT = """
+            SELECT * FROM POST WHERE ID = :id""";
+
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final ResultSetExtractor<List<Post>> postResultSetExtractor;
@@ -52,5 +55,11 @@ public class PostRepository {
         insertParams.put(Post.PostColumn.LIKES_COUNT.getColumnName(), post.getLikesCount());
 
         namedParameterJdbcTemplate.update(INSERT_STATEMENT, insertParams);
+    }
+
+    public Post findById(Long id) {
+        return namedParameterJdbcTemplate.query(SELECT_BY_ID_STATEMENT, Map.of(Post.PostColumn.ID.getColumnName(), id), postResultSetExtractor).stream()
+                .findFirst()
+                .orElse(null);
     }
 }

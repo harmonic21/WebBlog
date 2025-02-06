@@ -2,10 +2,7 @@ package ru.yandex.practicum.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
 
@@ -45,6 +42,15 @@ public class PostController {
     public String createNewPost(@ModelAttribute PostDto newPost) {
         postService.save(newPost);
         return "redirect:/";
+    }
+
+    @GetMapping("/post/{id}")
+    public String getPostInfoById(@PathVariable("id") Long id,
+                                  Model model) {
+        PostDto post = postService.findById(id);
+        post.setContent(replaceNewLineWithBrTag(post.getContent()));
+        model.addAttribute("post", post);
+        return "post-detailed";
     }
 
     private String replaceNewLineWithBrTag(String content) {

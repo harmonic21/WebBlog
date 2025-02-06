@@ -36,6 +36,11 @@ public class PostService {
         );
     }
 
+    public PostDto findById(Long id) {
+        Post postDomain = postRepository.findById(id);
+        return mapToDto(postDomain);
+    }
+
     private String[] splitTags(String tags) {
         return Optional.ofNullable(tags)
                 .map(t -> t.split(";"))
