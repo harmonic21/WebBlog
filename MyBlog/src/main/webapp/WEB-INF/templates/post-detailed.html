@@ -18,6 +18,8 @@
 
 <div th:utext="${post.content}"></div>
 
+<button th:attr="onclick=|like()|">Мне нравится</button>
+<br>
 
 <i class="fa fa-heart" style="font-size:24px;color:red" th:attr="id=like_counter" th:text="${post.likesCount}"></i>
 <br>
@@ -26,6 +28,14 @@
 </div>
 <br>
 <hr>
+<script>
+    function like() {
+        document.getElementById("like_counter").innerHTML = (+document.getElementById("like_counter").innerHTML) + (+1);
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", window.location.href + "/like", true);
+        xhr.send();
+    }
+</script>
 
 </body>
 </html>

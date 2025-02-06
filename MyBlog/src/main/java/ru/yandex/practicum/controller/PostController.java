@@ -53,6 +53,13 @@ public class PostController {
         return "post-detailed";
     }
 
+    @PutMapping("/post/{id}/like")
+    @ResponseBody
+    public void likePost(@PathVariable("id") Long id) {
+        postService.likePostWithId(id);
+    }
+
+
     private String replaceNewLineWithBrTag(String content) {
         return content.replace("\n", "<br>");
     }

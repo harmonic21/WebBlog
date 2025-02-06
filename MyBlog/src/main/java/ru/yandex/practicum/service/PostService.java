@@ -41,6 +41,10 @@ public class PostService {
         return mapToDto(postDomain);
     }
 
+    public void likePostWithId(Long id) {
+        postRepository.likePostWithId(id);
+    }
+
     private String[] splitTags(String tags) {
         return Optional.ofNullable(tags)
                 .map(t -> t.split(";"))
