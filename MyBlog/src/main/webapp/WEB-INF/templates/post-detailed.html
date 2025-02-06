@@ -8,6 +8,8 @@
 
 <a th:href="@{/}">Домой</a>
 <br>
+<button th:attr="onclick=|showPostUpdateForm()|">Редактировать пост</button>
+<br>
 
 <h1 th:text="${post.title}"></h1>
 
@@ -28,7 +30,63 @@
 </div>
 <br>
 <hr>
+<br>
+<button th:attr="onclick=|showPostDeleteForm()|">Удалить пост</button>
+<br>
+
+<div th:attr="id=post_delete_form" style="display: none;">
+    <div>
+        <h3><b>Вы уверены, что хотите безвозвратно удалить этот пост?</b></h3>
+        <form method="POST" th:action="@{/post/{id}/delete(id=${post.id})}">
+            <button><b>Да</b></button>
+        </form>
+        <br>
+        <button th:attr="onclick=|hidePostDeleteForm()|">Нет</button>
+    </div>
+</div>
+
+
+<div th:attr="id=post_update_form" style="display: none;">
+    <div>
+        <h3><b>Свойства поста</b></h3>
+        <form method="POST" th:object="${post}" th:action="@{/post/{id}/update(id=${post.id})}">
+            <label for="title"><b>Название: </b></label>
+            <input type="text" th:field="*{title}" oninput="this.size=Math.max(this.value.length, 10)" required="true"/>
+            <br>
+            <br>
+            <label for="content"><b>Содержимое: </b></label>
+            <textarea type="text" th:field="*{content}" oninput="this.size=Math.max(this.value.length, 10)"/>
+            <br>
+            <label for="tags"><b>Тэги (перечисляйте через символ ';'): </b></label>
+            <input type="text" th:field="*{tags}" oninput="this.size=Math.max(this.value.length, 10)"/>
+            <br>
+            <label for="image"><b>Изображение: </b></label>
+            <input type="file" th:field="*{image}" accept="image/*" th:value="${post.image}">
+            <br>
+            <button><b>Сохранить изменения</b></button>
+        </form>
+        <br>
+        <button th:attr="onclick=|hidePostUpdateForm()|">Отменить</button>
+    </div>
+</div>
+
 <script>
+    function showPostUpdateForm() {
+        document.getElementById("post_update_form").style.display = 'block';
+    }
+
+    function hidePostUpdateForm() {
+        document.getElementById("post_update_form").style.display = 'none';
+    }
+
+    function showPostDeleteForm() {
+        document.getElementById("post_delete_form").style.display = 'block';
+    }
+
+    function hidePostDeleteForm() {
+        document.getElementById("post_delete_form").style.display = 'none';
+    }
+
     function like() {
         document.getElementById("like_counter").innerHTML = (+document.getElementById("like_counter").innerHTML) + (+1);
         var xhr = new XMLHttpRequest();

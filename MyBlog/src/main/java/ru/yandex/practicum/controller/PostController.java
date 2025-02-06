@@ -59,6 +59,18 @@ public class PostController {
         postService.likePostWithId(id);
     }
 
+    @PostMapping("/post/{id}/update")
+    public String updatePost(@PathVariable("id") Long id, @ModelAttribute PostDto post) {
+        postService.update(post.setId(id));
+        return "redirect:/post/%s".formatted(id);
+    }
+
+    @PostMapping("/post/{id}/delete")
+    public String deletePost(@PathVariable("id") Long id) {
+        postService.deleteById(id);
+        return "redirect:/";
+    }
+
 
     private String replaceNewLineWithBrTag(String content) {
         return content.replace("\n", "<br>");

@@ -25,6 +25,12 @@ public class PostRepository {
             SELECT * FROM POST WHERE ID = :id""";
     private static final String ADD_LIKE_STATEMENT = """
             UPDATE POST SET LIKES_COUNT = COALESCE(LIKES_COUNT, 0) + 1 WHERE ID = :id""";
+    private static final String UPDATE_STATEMENT = """
+            UPDATE POST
+            SET TITLE = :title, CONTENT = :content, TAGS = :tags, IMAGE = :image
+            WHERE ID = :id""";
+    private static final String DELETE_BY_ID_STATEMENT = """
+            DELETE FROM POST WHERE ID = :id""";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final ResultSetExtractor<List<Post>> postResultSetExtractor;
@@ -65,5 +71,22 @@ public class PostRepository {
         return namedParameterJdbcTemplate.query(SELECT_BY_ID_STATEMENT, Map.of(Post.PostColumn.ID.getColumnName(), id), postResultSetExtractor).stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Transactional
+    public void update(Post post) {
+        Map<String, Object> updateParams = new HashMap<>();
+        updateParams.put(Post.PostColumn.ID.getColumnName(), post.getId());
+        updateParams.put(Post.PostColumn.TITLE.getColumnName(), post.getTitle());
+        updateParams.put(Post.PostColumn.CONTENT.getColumnName(), post.getContent());
+        updateParams.put(Post.PostColumn.TAGS.getColumnName(), post.getTags());
+        updateParams.put(Post.PostColumn.IMAGE.getColumnName(), post.getImage());
+
+        namedParameterJdbcTemplate.update(UPDATE_STATEMENT, updateParams);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        namedParameterJdbcTemplate.update(DELETE_BY_ID_STATEMENT, Map.of(Post.PostColumn.ID.getColumnName(), id));
     }
 }

@@ -45,6 +45,22 @@ public class PostService {
         postRepository.likePostWithId(id);
     }
 
+    public void deleteById(Long id) {
+        postRepository.delete(id);
+    }
+
+    public void update(PostDto post) {
+        postRepository.update(
+                new Post()
+                        .setId(post.getId())
+                        .setTitle(post.getTitle())
+                        .setContent(post.getContent())
+                        .setTags(splitTags(post.getTags()))
+                        .setImage(post.getImage())
+                        .setLikesCount(post.getLikesCount())
+        );
+    }
+
     private String[] splitTags(String tags) {
         return Optional.ofNullable(tags)
                 .map(t -> t.split(";"))
