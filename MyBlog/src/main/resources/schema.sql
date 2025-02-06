@@ -1,10 +1,16 @@
-create table if not exists users(
-  id bigserial primary key,
-  first_name varchar(256) not null,
-  last_name varchar(256) not null,
-  age integer not null,
-  active boolean not null);
+CREATE TABLE IF NOT EXISTS post (
+    id serial primary key,
+    title varchar(255) not null,
+    content text,
+    tags varchar(50) array,
+    image text,
+    likes_count bigint default 0
+);
 
-insert into users(first_name, last_name, age, active) values (1, 'Иван', 'Иванов', 30, true);
-insert into users(first_name, last_name, age, active) values (2, 'Петр', 'Петров', 25, false);
-insert into users(first_name, last_name, age, active) values (3, 'Мария', 'Сидорова', 28, true);
+CREATE TABLE IF NOT EXISTS comment (
+    id serial primary key,
+    post_id bigint,
+    author varchar(50) not null,
+    comment_content text not null,
+    foreign key (post_id) references post (id)
+);
