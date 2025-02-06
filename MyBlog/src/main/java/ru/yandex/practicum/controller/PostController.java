@@ -3,6 +3,8 @@ package ru.yandex.practicum.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
 
@@ -28,6 +30,12 @@ public class PostController {
         posts.forEach(post -> post.setContent(replaceNewLineWithBrTag(post.getContent())));
         model.addAttribute("posts", posts);
         return "posts";
+    }
+
+    @PostMapping("/post/create")
+    public String createNewPost(@ModelAttribute PostDto newPost) {
+        postService.save(newPost);
+        return "redirect:/";
     }
 
     private String replaceNewLineWithBrTag(String content) {

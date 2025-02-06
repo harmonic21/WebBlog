@@ -32,7 +32,40 @@
 </div>
 <br>
 <br>
-<br>
-<br>
+
+<div th:attr="id=post_create_form" style="display: none;">
+    <div>
+        <h3><b>Свойства поста</b></h3>
+        <form method="POST" th:object="${new_post}" th:action="@{/post/create}">
+            <label for="title"><b>Название: </b></label>
+            <input type="text" th:field="*{title}" oninput="this.size=Math.max(this.value.length, 10)" required="true"/>
+            <br>
+            <br>
+            <label for="content"><b>Содержимое: </b></label>
+            <textarea type="text" th:field="*{content}" oninput="this.size=Math.max(this.value.length, 10)"/>
+            <br>
+            <label for="tags"><b>Тэги (перечисляйте через символ ';'): </b></label>
+            <input type="text" th:field="*{tags}" oninput="this.size=Math.max(this.value.length, 10)"/>
+            <br>
+            <label for="image"><b>Изображение: </b></label>
+            <input type="file" th:field="*{image}" accept="image/*">
+            <br>
+            <button><b>Создать</b></button>
+        </form>
+        <br>
+        <button th:attr="onclick=|hidePostCreateForm()|">Отменить</button>
+    </div>
+</div>
+
+<script>
+    function showPostCreateForm() {
+        document.getElementById("post_create_form").style.display = 'block';
+    }
+
+    function hidePostCreateForm() {
+        document.getElementById("post_create_form").style.display = 'none';
+    }
+</script>
+
 </body>
 </html>

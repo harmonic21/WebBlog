@@ -6,6 +6,7 @@ import ru.yandex.practicum.dto.domain.Post;
 import ru.yandex.practicum.repository.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PostService {
@@ -22,11 +23,33 @@ public class PostService {
                 .toList();
     }
 
+    public void save(PostDto post) {
+        postRepository.save(
+                new Post()
+                        .setTitle(post.getTitle())
+                        .setContent(post.getContent())
+                        .setTags(splitTags(post.getTags()))
+                        .setImage(post.getImage())
+                        .setLikesCount(post.getLikesCount())
+        );
+    }
+
+    private String[] splitTags(String tags) {
+        return Optional.ofNullable(tags)
+                .map(t -> t.split(";"))
+                .orElse(null);
+    }
+
+    private String concatTags(String[] tags) {
+        return Optional.ofNullable(tags).map(t -> String.join(";", t)).orElse(null);
+    }
+
     private PostDto mapToDto(Post post) {
         var postDto = new PostDto()
                 .setId(post.getId())
                 .setTitle(post.getTitle())
                 .setContent(post.getContent())
+                .setTags(concatTags(post.getTags()))
                 .setImage(post.getImage())
                 .setLikesCount(post.getLikesCount());
         return postDto;
