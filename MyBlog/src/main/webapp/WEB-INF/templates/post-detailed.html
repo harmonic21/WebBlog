@@ -30,6 +30,28 @@
 </div>
 <br>
 <hr>
+<div>
+    <b>Комментарии</b>
+    <br>
+    <br>
+    <div th:each="comment : ${post.comments}">
+        <div><b th:text="${comment.author}"></b></div>
+        <br>
+        <div th:text="${comment.commentContent}" contenteditable="true"></div>
+        <hr>
+    </div>
+    <form method="POST" th:object="${new_comment}" th:action="@{/post/{id}/comment/create(id=${post.id})}">
+        <label for="author"><b>Автор: </b></label>
+        <input type="text" th:field="*{author}" oninput="this.size=Math.max(this.value.length, 10)" required="true"/>
+        <br>
+        <br>
+        <label for="comment_content"><b>Комментарий: </b></label>
+        <textarea type="text" th:field="*{commentContent}" oninput="this.size=Math.max(this.value.length, 10)" required="true"/>
+        <br>
+        <button><b>Добавить комментарий</b></button>
+    </form>
+</div>
+
 <br>
 <button th:attr="onclick=|showPostDeleteForm()|">Удалить пост</button>
 <br>
@@ -71,6 +93,14 @@
 </div>
 
 <script>
+    document.addEventListener("keydown", handlerKeydown);
+
+    function handlerKeydown(event) {
+        if (event.ctrlKey && event.keyCode == 13) {
+            console.log(event);
+        }
+    }
+
     function showPostUpdateForm() {
         document.getElementById("post_update_form").style.display = 'block';
     }

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 public class PostDto {
@@ -9,6 +10,7 @@ public class PostDto {
     private String tags;
     private String image;
     private Long likesCount;
+    private List<CommentDto> comments;
 
     public Long getId() {
         return id;
@@ -61,6 +63,15 @@ public class PostDto {
 
     public PostDto setLikesCount(Long likesCount) {
         this.likesCount = likesCount;
+        return this;
+    }
+
+    public List<CommentDto> getComments() {
+        return comments;
+    }
+
+    public PostDto setComments(List<CommentDto> comments) {
+        this.comments = comments;
         return this;
     }
 

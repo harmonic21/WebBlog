@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.dto.CommentDto;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
 
@@ -37,7 +38,6 @@ public class PostController {
         return "posts";
     }
 
-
     @PostMapping("/post/create")
     public String createNewPost(@ModelAttribute PostDto newPost) {
         postService.save(newPost);
@@ -50,6 +50,7 @@ public class PostController {
         PostDto post = postService.findById(id);
         post.setContent(replaceNewLineWithBrTag(post.getContent()));
         model.addAttribute("post", post);
+        model.addAttribute("new_comment", new CommentDto());
         return "post-detailed";
     }
 
@@ -70,7 +71,6 @@ public class PostController {
         postService.deleteById(id);
         return "redirect:/";
     }
-
 
     private String replaceNewLineWithBrTag(String content) {
         return content.replace("\n", "<br>");
