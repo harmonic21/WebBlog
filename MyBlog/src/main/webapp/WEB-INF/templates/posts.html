@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+<h1>Добро пожаловать на страницу моего личного блога!</h1>
+<p>Пожалуйста, ознакомьтесь с моими постами</p>
+<br>
+<button th:attr="onclick=|showPostCreateForm()|">Добавить пост</button>
+<br>
+
+<div th:each="post : ${posts}" th:with="content_len=${#strings.length(post.content)}">
+    <h3><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}"></a></h3>
+    <br>
+
+    <div th:utext=" ( ${content_len > 120} ) ? ${#strings.substring(post.content,0,120)} + '…' : ${post.content}"></div>
+
+    <div th:if="${#strings.length(post.image) > 0}">
+        <img th:src="@{'images/' + ${post.image}}" alt="No image in static context"/>
+    </div>
+    <br>
+    <div>
+        <b>Тэги: </b><i th:text="${post.tags}"></i>
+    </div>
+
+    <i class="fa fa-heart" style="font-size:24px;color:red" th:text="${post.likesCount}"></i>
+    <i class="fa fa-comments-o" style="font-size:24px" th:text="${#lists.size(post.comments)}"></i>
+    <hr>
+</div>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>
