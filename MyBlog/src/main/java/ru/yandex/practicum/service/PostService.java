@@ -1,6 +1,8 @@
 package ru.yandex.practicum.service;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.dto.FiltrationParams;
+import ru.yandex.practicum.dto.PaginationParams;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.dto.domain.Post;
 import ru.yandex.practicum.repository.PostRepository;
@@ -17,8 +19,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<PostDto> findAll() {
-        return postRepository.findAll().stream()
+    public List<PostDto> findAll(Integer pageNum, Integer pageSize, String tags) {
+        return postRepository.findAll(new PaginationParams(pageNum, pageSize), new FiltrationParams(tags)).stream()
                 .map(this::mapToDto)
                 .toList();
     }

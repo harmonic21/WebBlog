@@ -33,6 +33,19 @@
 <br>
 <br>
 
+<form method="GET" th:action="@{/posts}">
+    <label for="page-num"><b>Номер страницы</b></label>
+    <input type="number" th:name="page-num" required="true" th:value="${currentPageNum}"/>
+    <label for="page-size"><b>Размер страницы</b></label>
+    <input type="number" th:name="page-size" required="true" th:value="${currentPageSize}" />
+    <label for="tags"><b>Тэг</b></label>
+    <input type="text" th:name="tags" th:value="${currentTags}"/>
+    <br>
+    <button>Обновить</button>
+</form>
+<br>
+<br>
+
 <div th:attr="id=post_create_form" style="display: none;">
     <div>
         <h3><b>Свойства поста</b></h3>

@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
 
@@ -25,12 +26,20 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public String getPostsPage(Model model) {
-        List<PostDto> posts = postService.findAll();
+    public String getPostsPage(Model model,
+                               @RequestParam(required = false, defaultValue = "10", name = "page-size") Integer pageSize,
+                               @RequestParam(required = false, defaultValue = "0", name = "page-num") Integer pageNum,
+                               @RequestParam(required = false, name = "tags") String tags) {
+        List<PostDto> posts = postService.findAll(pageNum, pageSize, tags);
         posts.forEach(post -> post.setContent(replaceNewLineWithBrTag(post.getContent())));
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", posts)
+                .addAttribute("new_post", new PostDto())
+                .addAttribute("currentPageNum", pageNum)
+                .addAttribute("currentPageSize", pageSize)
+                .addAttribute("currentTags", tags);
         return "posts";
     }
+
 
     @PostMapping("/post/create")
     public String createNewPost(@ModelAttribute PostDto newPost) {
