@@ -9,6 +9,7 @@ import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class PostController {
@@ -30,7 +31,7 @@ public class PostController {
                                @RequestParam(required = false, defaultValue = "0", name = "page-num") Integer pageNum,
                                @RequestParam(required = false, name = "tags") String tags) {
         List<PostDto> posts = postService.findAll(pageNum, pageSize, tags);
-        posts.forEach(post -> post.setContent(replaceNewLineWithBrTag(post.getContent())));
+        posts.forEach(post -> post.setContent(cutByOneParagraph(post.getContent())));
         model.addAttribute("posts", posts)
                 .addAttribute("new_post", new PostDto())
                 .addAttribute("currentPageNum", pageNum)
@@ -91,6 +92,13 @@ public class PostController {
     public String deletePost(@PathVariable("id") Long id) {
         postService.deleteById(id);
         return "redirect:/";
+    }
+
+    private String cutByOneParagraph(String content) {
+        if (Objects.nonNull(content)) {
+            return content.contains("\n") ? content.substring(0, content.indexOf('\n')) : content;
+        }
+        return null;
     }
 
     private String replaceNewLineWithBrTag(String content) {
