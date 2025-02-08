@@ -1,8 +1,6 @@
 package ru.yandex.practicum;
 
-import jakarta.servlet.Filter;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
+import jakarta.servlet.*;
 import org.h2.server.web.JakartaWebServlet;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -39,5 +37,10 @@ public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDis
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
         servletContext.addServlet("H2Console", JakartaWebServlet.class).addMapping("/console/*");
+    }
+
+    @Override
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        registration.setMultipartConfig(new MultipartConfigElement("/", 20848820, 418018841, 1048576));
     }
 }

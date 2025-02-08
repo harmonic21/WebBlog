@@ -5,6 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -15,6 +17,11 @@ import javax.sql.DataSource;
 @EnableWebMvc
 @ComponentScan(basePackages = "ru.yandex.practicum")
 public class AppConfiguration implements WebMvcConfigurer {
+
+    @Bean
+    public MultipartResolver filterMultipartResolver() {
+        return new StandardServletMultipartResolver();
+    }
 
     @Bean
     public DataSource dataSource() {

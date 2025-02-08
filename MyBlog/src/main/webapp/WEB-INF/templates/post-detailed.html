@@ -14,7 +14,7 @@
 <h1 th:text="${post.title}"></h1>
 
 <div th:if="${#strings.length(post.image) > 0}">
-    <img th:src="@{'/images/' + ${post.image}}" alt="No image in static context" style="display: block; margin-left: auto; margin-right: auto; width: 10%;"/>
+    <img th:src="${post.image}" alt="Image not loaded"/>
 </div>
 <br>
 
@@ -71,7 +71,7 @@
 <div th:attr="id=post_update_form" style="display: none;">
     <div>
         <h3><b>Свойства поста</b></h3>
-        <form method="POST" th:object="${post}" th:action="@{/post/{id}/update(id=${post.id})}">
+        <form method="POST" th:object="${post}" th:action="@{/post/{id}/update(id=${post.id})}" enctype="multipart/form-data">
             <label for="title"><b>Название: </b></label>
             <input type="text" th:field="*{title}" oninput="this.size=Math.max(this.value.length, 10)" required="true"/>
             <br>

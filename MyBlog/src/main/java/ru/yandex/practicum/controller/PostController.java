@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.dto.CommentDto;
 import ru.yandex.practicum.dto.PostDto;
 import ru.yandex.practicum.service.PostService;
@@ -39,8 +40,17 @@ public class PostController {
     }
 
     @PostMapping("/post/create")
-    public String createNewPost(@ModelAttribute PostDto newPost) {
-        postService.save(newPost);
+    public String createNewPost(@RequestParam(name = "title") String title,
+                                @RequestParam(name = "content") String content,
+                                @RequestParam(name = "tags") String tags,
+                                @RequestParam(name = "image") MultipartFile image) {
+        postService.save(
+                new PostDto()
+                        .setTitle(title)
+                        .setContent(content)
+                        .setTags(tags),
+                image
+        );
         return "redirect:/";
     }
 
@@ -61,8 +71,19 @@ public class PostController {
     }
 
     @PostMapping("/post/{id}/update")
-    public String updatePost(@PathVariable("id") Long id, @ModelAttribute PostDto post) {
-        postService.update(post.setId(id));
+    public String updatePost(@PathVariable("id") Long id,
+                             @RequestParam(name = "title") String title,
+                             @RequestParam(name = "content") String content,
+                             @RequestParam(name = "tags") String tags,
+                             @RequestParam(name = "image") MultipartFile image) {
+        postService.update(
+                new PostDto()
+                        .setId(id)
+                        .setTitle(title)
+                        .setContent(content)
+                        .setTags(tags),
+                image
+        );
         return "redirect:/post/%s".formatted(id);
     }
 
