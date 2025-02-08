@@ -13,11 +13,11 @@
 <button th:attr="onclick=|showPostCreateForm()|">Добавить пост</button>
 <br>
 
-<div th:each="post : ${posts}" th:with="content_len=${#strings.length(post.content)}">
+<div th:each="post : ${posts}">
     <h3><a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}"></a></h3>
     <br>
 
-    <div th:utext=" ( ${content_len > 120} ) ? ${#strings.substring(post.content,0,120)} + '…' : ${post.content}"></div>
+    <div th:utext="${post.content}" style="line-height:1.2em; height:3.6em; overflow:hidden"></div>
 
     <div th:if="${#strings.length(post.image) > 0}">
         <img th:src="${post.image}" alt="Image not loaded"/>
