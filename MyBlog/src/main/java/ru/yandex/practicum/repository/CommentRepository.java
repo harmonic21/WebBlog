@@ -21,6 +21,9 @@ public class CommentRepository {
 
     private static final String INSERT_STATEMENT = """
             INSERT INTO COMMENT (POST_ID, AUTHOR, COMMENT_CONTENT) VALUES (:post_id, :author, :comment_content)""";
+    private static final String UPDATE_COMMENT_TEXT_STATEMENT = """
+            UPDATE COMMENT SET COMMENT_CONTENT = :comment_content WHERE ID = :id
+            """;
 
     private final ResultSetExtractor<List<Comment>> commentResultSetExtractor;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -51,5 +54,13 @@ public class CommentRepository {
                 Comment.CommentColumn.COMMENT_CONTENT.getColumnName(), comment.getCommentContent()
         );
         namedParameterJdbcTemplate.update(INSERT_STATEMENT, insertParams);
+    }
+
+    @Transactional
+    public void updateCommentText(Long id, String newText) {
+        namedParameterJdbcTemplate.update(UPDATE_COMMENT_TEXT_STATEMENT, Map.of(
+                Comment.CommentColumn.ID.getColumnName(), id,
+                Comment.CommentColumn.COMMENT_CONTENT.getColumnName(), newText
+        ));
     }
 }

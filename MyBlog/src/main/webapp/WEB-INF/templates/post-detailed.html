@@ -37,7 +37,7 @@
     <div th:each="comment : ${post.comments}">
         <div><b th:text="${comment.author}"></b></div>
         <br>
-        <div th:text="${comment.commentContent}" contenteditable="true"></div>
+        <div th:text="${comment.commentContent}" th:id="${comment.id}" class="comment" contenteditable="true"></div>
         <hr>
     </div>
     <form method="POST" th:object="${new_comment}" th:action="@{/post/{id}/comment/create(id=${post.id})}">
@@ -96,8 +96,19 @@
     document.addEventListener("keydown", handlerKeydown);
 
     function handlerKeydown(event) {
-        if (event.ctrlKey && event.keyCode == 13) {
-            console.log(event);
+        if (event.ctrlKey && event.keyCode == 13 && event.target.className == 'comment') {
+            var data = new FormData();
+            data.append('id', event.target.id);
+            data.append('text', event.target.innerText);
+
+            var updateCommentUrl = window.location.href + "/comment/update";
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("PUT", updateCommentUrl, true);
+            xhr.onload = function () {
+                window.location.reload();
+            }
+            xhr.send(data);
         }
     }
 
