@@ -22,4 +22,8 @@ public class CommentService {
                         .setCommentContent(commentDto.getCommentContent())
         );
     }
+
+    public void updateCommentText(Long id, String newText) {
+        commentRepository.updateCommentText(id, newText);
+    }
 }
