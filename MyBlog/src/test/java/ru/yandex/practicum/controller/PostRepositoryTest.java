@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.yandex.practicum.TestConfiguration;
-import ru.yandex.practicum.configuration.DataBaseSchemaInitializer;
 import ru.yandex.practicum.dto.domain.Post;
 import ru.yandex.practicum.extractor.CommentResultSetExtractor;
 import ru.yandex.practicum.extractor.PostResultSetExtractor;
@@ -25,12 +23,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {
-        TestConfiguration.class,
         PostRepository.class,
         CommentRepository.class,
         CommentResultSetExtractor.class,
-        PostResultSetExtractor.class,
-        DataBaseSchemaInitializer.class
+        PostResultSetExtractor.class
 })
 class PostRepositoryTest {
 

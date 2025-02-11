@@ -1,6 +1,6 @@
 package ru.yandex.practicum.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.yandex.practicum.dto.CommentDto;
 import ru.yandex.practicum.dto.FiltrationParams;
@@ -15,7 +15,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class PostService {
 
     private static final String BASE_64_IMAGE_TEMPLATE = "data:image/jpeg;base64,%s";

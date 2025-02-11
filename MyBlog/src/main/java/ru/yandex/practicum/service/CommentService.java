@@ -1,11 +1,11 @@
 package ru.yandex.practicum.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.dto.CommentDto;
 import ru.yandex.practicum.dto.domain.Comment;
 import ru.yandex.practicum.repository.CommentRepository;
 
-@Component
+@Service
 public class CommentService {
 
     private final CommentRepository commentRepository;
