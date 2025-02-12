@@ -1,33 +1,24 @@
-package ru.yandex.practicum.controller;
+package ru.yandex.practicum.repository;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.yandex.practicum.dto.domain.Post;
-import ru.yandex.practicum.extractor.CommentResultSetExtractor;
 import ru.yandex.practicum.extractor.PostResultSetExtractor;
-import ru.yandex.practicum.repository.CommentRepository;
-import ru.yandex.practicum.repository.PostRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {
-        PostRepository.class,
-        CommentRepository.class,
-        CommentResultSetExtractor.class,
-        PostResultSetExtractor.class
-})
+@SpringBootTest
 class PostRepositoryTest {
 
     @Autowired
@@ -62,20 +53,19 @@ class PostRepositoryTest {
 
     @Test
     public void shouldSavePost() {
-        List<Post> postInDbBeforeTest = namedParameterJdbcTemplate.query("SELECT * FROM POST", postResultSetExtractor);
+        List<Post> postInDbBeforeTest = namedParameterJdbcTemplate.query("SELECT * FROM POST WHERE title = 'test-post'", postResultSetExtractor);
         assertEquals(0, postInDbBeforeTest.size());
 
         Post post = new Post()
-                .setTitle("title")
+                .setTitle("test-post")
                 .setContent("content")
                 .setImage("image")
                 .setLikesCount(0L);
 
         postRepository.save(post);
 
-        List<Post> postInDbAfterTest = namedParameterJdbcTemplate.query("SELECT * FROM POST", postResultSetExtractor);
+        List<Post> postInDbAfterTest = namedParameterJdbcTemplate.query("SELECT * FROM POST WHERE title = 'test-post'", postResultSetExtractor);
         assertEquals(1, postInDbAfterTest.size());
-        assertEquals("title", postInDbAfterTest.get(0).getTitle());
+        assertEquals("test-post", postInDbAfterTest.get(0).getTitle());
     }
-
 }
